@@ -28,12 +28,12 @@ public class Joe {
 
     public void takeInput(Scanner scanner) {
         String input = scanner.nextLine();
+        line();
         if (input.equals("bye")) {
             this.byeText();
             scanner.close();
 
         } else if (input.toLowerCase().equals("list")) {
-            line();
             this.print_todoList();
             this.takeInput(scanner);
 
@@ -45,9 +45,29 @@ public class Joe {
             this.markTaskAsNotDone(Integer.parseInt(input.split(" ")[1]));
             this.takeInput(scanner);
 
+        } else if (input.split(" ")[0].toLowerCase().equals("todo")) {
+            String[] parts = input.split(" ", 2);
+            String description = parts[1];
+            this.addToList(new ToDo(description));
+            this.takeInput(scanner);
+
+        } else if (input.split(" ")[0].toLowerCase().equals("deadline")) {
+            String initial = input.split(" ", 2)[1];
+            String description = initial.split(" /by ")[0].trim();
+            String by = initial.split(" /by ")[1].trim();
+            this.addToList(new Deadline(description, by));
+            this.takeInput(scanner); 
+
+        } else if (input.split(" ")[0].toLowerCase().equals("event")) {
+            String initial = input.split(" ", 2)[1];
+            String description = initial.split(" /from ")[0].trim();
+            String from = initial.split(" /from ")[1].split(" /to ")[0].trim();
+            String to = initial.split(" /to ")[1].trim();
+            this.addToList(new Event(description, from, to));
+            this.takeInput(scanner);
+            
         } else {
-            line();
-            this.addToList(input);
+            System.out.println("Sorry I don't recognise that command...");
             line();
             this.takeInput(scanner);
         }
@@ -61,9 +81,12 @@ public class Joe {
         line();
     }
 
-    public void addToList(String item) {
-        this.todoList.add(new Task(item));
-        System.out.println("Added: " + item);
+    public void addToList(Task task) {
+        this.todoList.add(task);
+        System.out.println("Got it. I've added this task: \n");
+        System.out.println(task);
+        System.out.println("\nNow you have " + this.todoList.size() + " tasks in the list.");
+        line();
     }
 
     public void markTaskAsDone(int index) {
