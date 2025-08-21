@@ -3,17 +3,17 @@ import java.util.ArrayList;
 
 public class Joe {
     private ArrayList<Task> todoList = new ArrayList<>();
+    private Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         Joe joe = new Joe();
     }
 
     public Joe() {
         // Constructor can be used for initialization if needed
-        Scanner scanner = new Scanner(System.in);
         this.line();
         System.out.println("Hello I'm Joe\n" + "What can I do for you?");
         this.line();
-        this.takeInput(scanner);
+        this.takeInput();
     }
 
     public void line() {
@@ -21,56 +21,21 @@ public class Joe {
     }
 
     public void byeText() {
-        line();
         System.out.println("Bye. Hope to see you again soon!");
         line();
     }
 
-    public void takeInput(Scanner scanner) {
+    public void takeInput() {
         String input = scanner.nextLine();
         line();
-        if (input.equals("bye")) {
-            this.byeText();
-            scanner.close();
 
-        } else if (input.toLowerCase().equals("list")) {
-            this.print_todoList();
-            this.takeInput(scanner);
-
-        } else if (input.split(" ")[0].toLowerCase().equals("mark")) {
-            this.markTaskAsDone(Integer.parseInt(input.split(" ")[1]));
-            this.takeInput(scanner);
-
-        } else if (input.split(" ")[0].toLowerCase().equals("unmark")) {
-            this.markTaskAsNotDone(Integer.parseInt(input.split(" ")[1]));
-            this.takeInput(scanner);
-
-        } else if (input.split(" ")[0].toLowerCase().equals("todo")) {
-            String[] parts = input.split(" ", 2);
-            String description = parts[1];
-            this.addToList(new ToDo(description));
-            this.takeInput(scanner);
-
-        } else if (input.split(" ")[0].toLowerCase().equals("deadline")) {
-            String initial = input.split(" ", 2)[1];
-            String description = initial.split(" /by ")[0].trim();
-            String by = initial.split(" /by ")[1].trim();
-            this.addToList(new Deadline(description, by));
-            this.takeInput(scanner); 
-
-        } else if (input.split(" ")[0].toLowerCase().equals("event")) {
-            String initial = input.split(" ", 2)[1];
-            String description = initial.split(" /from ")[0].trim();
-            String from = initial.split(" /from ")[1].split(" /to ")[0].trim();
-            String to = initial.split(" /to ")[1].trim();
-            this.addToList(new Event(description, from, to));
-            this.takeInput(scanner);
-            
-        } else {
-            System.out.println("Sorry I don't recognise that command...");
+        try {
+            this.executeCommand(input);
+        } catch (InvalidJoeInputException e) {
+            System.out.println(e.getMessage());
             line();
-            this.takeInput(scanner);
-        }
+            takeInput();
+        } 
     }
 
     public void print_todoList() {
@@ -113,5 +78,92 @@ public class Joe {
             System.out.println(task);
             line();
         }
+    }
+
+    public void executeCommand(String input) throws InvalidJoeInputException {
+        String[] parts = input.split(" ");
+        String command = parts[0];
+        switch (command) {
+            case "bye": {
+                this.byeText();
+                this.scanner.close();
+                break;
+            }
+
+            case "list": {
+                this.print_todoList();
+                this.takeInput();
+                break;
+            }
+
+            case "mark": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+
+                if (Integer.parseInt(parts[1]) > this.todoList.size()) {
+                    throw new InvalidJoeInputException(command, "Invalid index");
+                }
+
+                this.markTaskAsDone(Integer.parseInt(parts[1]));
+                this.takeInput();
+                break;
+            }
+
+            case "unmark": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+
+                if (Integer.parseInt(parts[1]) > this.todoList.size()) {
+                    throw new InvalidJoeInputException(command, "Invalid index");
+                }
+
+                this.markTaskAsNotDone(Integer.parseInt(parts[1]));
+                this.takeInput();
+                break;
+            }
+
+            case "todo": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+                
+                String description = input.split(" ", 2)[1];
+                this.addToList(new ToDo(description));
+                this.takeInput();
+                break;
+            }
+
+            case "deadline": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+                
+                String description = input.split(" ", 2)[1].split(" /by ")[0].trim();
+                String by = input.split(" /by ")[1].trim();
+                this.addToList(new Deadline(description, by));
+                this.takeInput(); 
+                break;
+            }
+
+            case "event": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+                
+                String description = input.split(" /from ")[0].trim();
+                String from = input.split(" /from ")[1].split(" /to ")[0].trim();
+                String to = input.split(" /to ")[1].trim();
+                this.addToList(new Event(description, from, to));
+                this.takeInput();
+                break;
+            }
+
+            default: {
+                throw new InvalidJoeInputException();
+            }
+        }   
+
     }
 }
