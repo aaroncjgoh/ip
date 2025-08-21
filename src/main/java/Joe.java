@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Joe {
-    private ArrayList<String> todoList = new ArrayList<>();
+    private ArrayList<Task> todoList = new ArrayList<>();
     public static void main(String[] args) {
         Joe joe = new Joe();
     }
@@ -28,12 +28,23 @@ public class Joe {
 
     public void takeInput(Scanner scanner) {
         String input = scanner.nextLine();
-        if (input.toLowerCase().equals("bye")) {
+        if (input.equals("bye")) {
             this.byeText();
+            scanner.close();
+
         } else if (input.toLowerCase().equals("list")) {
             line();
             this.print_todoList();
             this.takeInput(scanner);
+
+        } else if (input.split(" ")[0].toLowerCase().equals("mark")) {
+            this.markTaskAsDone(Integer.parseInt(input.split(" ")[1]));
+            this.takeInput(scanner);
+
+        } else if (input.split(" ")[0].toLowerCase().equals("unmark")) {
+            this.markTaskAsNotDone(Integer.parseInt(input.split(" ")[1]));
+            this.takeInput(scanner);
+
         } else {
             line();
             this.addToList(input);
@@ -51,7 +62,33 @@ public class Joe {
     }
 
     public void addToList(String item) {
-        this.todoList.add(item);
+        this.todoList.add(new Task(item));
         System.out.println("Added: " + item);
+    }
+
+    public void markTaskAsDone(int index) {
+        if (index > this.todoList.size()) {
+            System.out.println("Invalid task number. Please try again.");
+            line();
+        } else {
+            System.out.println("Nice I've marked this task as done:");
+            Task task = todoList.get(index - 1);
+            task.markAsDone();
+            System.out.println(task);
+            line();
+        }
+    }
+
+    public void markTaskAsNotDone(int index) {
+        if (index > this.todoList.size()) {
+            System.out.println("Invalid task number. Please try again.");
+            line();
+        } else {
+            System.out.println("Ok, I've marked the task as not done:");
+            Task task = todoList.get(index - 1);
+            task.markAsNotDone();
+            System.out.println(task);
+            line();
+        }
     }
 }
