@@ -1,6 +1,8 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Joe {
+    private ArrayList<String> todoList = new ArrayList<>();
     public static void main(String[] args) {
         Joe joe = new Joe();
     }
@@ -28,11 +30,28 @@ public class Joe {
         String input = scanner.nextLine();
         if (input.toLowerCase().equals("bye")) {
             this.byeText();
+        } else if (input.toLowerCase().equals("list")) {
+            line();
+            this.print_todoList();
+            this.takeInput(scanner);
         } else {
             line();
-            System.out.println("You just said: " + input);
+            this.addToList(input);
             line();
             this.takeInput(scanner);
         }
+    }
+
+    public void print_todoList() {
+        System.out.println("Your To-Do List:");
+        for (int i = 0; i < this.todoList.size(); i++) {
+            System.out.println((i + 1) + ". " + this.todoList.get(i));
+        }
+        line();
+    }
+
+    public void addToList(String item) {
+        this.todoList.add(item);
+        System.out.println("Added: " + item);
     }
 }
