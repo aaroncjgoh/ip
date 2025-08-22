@@ -54,6 +54,15 @@ public class Joe {
         line();
     }
 
+    public void deleteFromList(int index) {
+        Task task = this.todoList.get(index);
+        this.todoList.remove(index);
+        System.out.println("Got it. I'v removed this task from your list: \n");
+        System.out.println(task);
+        System.out.println("\nNow you have " + this.todoList.size() + " tasks in the list.");
+        line();
+    }
+
     public void markTaskAsDone(int index) {
         if (index > this.todoList.size()) {
             System.out.println("Invalid task number. Please try again.");
@@ -101,7 +110,7 @@ public class Joe {
                     throw new InvalidJoeInputException(command);
                 }
 
-                if (Integer.parseInt(parts[1]) > this.todoList.size()) {
+                if (Integer.parseInt(parts[1]) > this.todoList.size() || Integer.parseInt(parts[1]) < 1) {
                     throw new InvalidJoeInputException(command, "Invalid index");
                 }
 
@@ -115,7 +124,7 @@ public class Joe {
                     throw new InvalidJoeInputException(command);
                 }
 
-                if (Integer.parseInt(parts[1]) > this.todoList.size()) {
+                if (Integer.parseInt(parts[1]) > this.todoList.size() || Integer.parseInt(parts[1]) < 1) {
                     throw new InvalidJoeInputException(command, "Invalid index");
                 }
 
@@ -156,6 +165,21 @@ public class Joe {
                 String from = input.split(" /from ")[1].split(" /to ")[0].trim();
                 String to = input.split(" /to ")[1].trim();
                 this.addToList(new Event(description, from, to));
+                this.takeInput();
+                break;
+            }
+
+            case "delete": {
+                if (parts.length < 2) {
+                    throw new InvalidJoeInputException(command);
+                }
+
+                if (Integer.parseInt(parts[1]) > this.todoList.size() || Integer.parseInt(parts[1]) < 1) {
+                    throw new InvalidJoeInputException(command, "Invalid index");
+                }
+
+                int index = Integer.parseInt(parts[1]) - 1;
+                this.deleteFromList(index);
                 this.takeInput();
                 break;
             }
