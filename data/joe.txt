@@ -1,3 +1,3 @@
-[T][1] Make the bed
-[E][1] Football Practise (from: 9pm to: 10pm)
-[E][0] Make cookies (from: 3pm to: 9pm)
+[T][0] Make the bed
+[D][0] Finish Homework (by: Aug 28 2025)
+[E][0] Play Basketball (from: Aug 29 2025 to: Aug 29 2025)

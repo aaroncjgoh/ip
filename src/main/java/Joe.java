@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Joe {
     private ArrayList<Task> todoList = new ArrayList<>();
@@ -39,6 +42,10 @@ public class Joe {
             this.executeCommand(input);
         } catch (InvalidJoeInputException e) {
             System.out.println(e.getMessage());
+            line();
+            takeInput();
+        } catch (DateTimeParseException e) {
+            System.out.println("Date time string is not in YYYY-MM-DD");
             line();
             takeInput();
         }
@@ -139,7 +146,7 @@ public class Joe {
                         String descriptionFinal = description.split("\\(")[0].strip();
                         String deadline = task.split("by:")[1].strip();
                         String deadlineFinal = deadline.substring(0, deadline.length() - 1);
-                        this.todoList.add(new Deadline(descriptionFinal, deadlineFinal, isDone));
+                        this.todoList.add(new Deadline(descriptionFinal, formatDatesFromMemory(deadlineFinal), isDone));
                         break;
                     }
 
@@ -149,7 +156,8 @@ public class Joe {
                         String from = task.split("from:")[1].split("to:")[0].strip();
                         String to = task.split("to: ")[1];
                         String toFinal = to.substring(0, to.length() - 1);
-                        this.todoList.add(new Event(descriptionFinal, from, toFinal, isDone));
+                        this.todoList.add(new Event(descriptionFinal, formatDatesFromMemory(from),
+                                formatDatesFromMemory(toFinal), isDone));
                         break;
                     }
 
@@ -164,6 +172,15 @@ public class Joe {
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public String formatDatesFromMemory(String date) {
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        String formattedDate = LocalDate.parse(date, inputFormat).format(outputFormat);
+
+        return formattedDate;
     }
 
     public void executeCommand(String input) throws InvalidJoeInputException {
