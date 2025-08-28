@@ -4,6 +4,10 @@ class Deadline extends Task {
         super(description + " (by: " + by + ")");
     }
 
+    public Deadline(String description, String by, boolean isDone) {
+        super(description + " (by: " + by + ")", isDone);
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString();

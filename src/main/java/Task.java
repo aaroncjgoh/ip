@@ -6,20 +6,25 @@ class Task {
         this.description = description;
     }
 
+    public Task(String description, boolean isDone) {
+        this.description = description;
+        this.isDone = isDone;
+    }
+
     public void markAsDone() {
         this.isDone = true;
     }
 
     public void markAsNotDone() {
         this.isDone = false;
-    }   
+    }
 
     @Override
     public String toString() {
         if (isDone) {
-            return "[X] " + description;
+            return "[1] " + description;
         } else {
-            return "[ ] " + description;
+            return "[0] " + description;
         }
     }
 }
