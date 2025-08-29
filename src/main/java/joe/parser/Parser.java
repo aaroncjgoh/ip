@@ -1,4 +1,14 @@
-class Parser {
+package joe.parser;
+
+import joe.exception.InvalidJoeInputException;
+import joe.storage.Storage;
+import joe.task.Deadline;
+import joe.task.Event;
+import joe.task.TaskList;
+import joe.task.ToDo;
+import joe.ui.Ui;
+
+public class Parser {
     private TaskList taskList;
     private Storage storage;
     private Ui ui;

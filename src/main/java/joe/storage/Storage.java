@@ -1,3 +1,5 @@
+package joe.storage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -5,9 +7,16 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import joe.task.Deadline;
+import joe.task.Event;
+import joe.task.Task;
+import joe.task.TaskList;
+import joe.task.ToDo;
+
 import java.util.ArrayList;
 
-class Storage {
+public class Storage {
     private ArrayList<Task> todoList = new ArrayList<>();
     private String filepath;
 

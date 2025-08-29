@@ -1,4 +1,12 @@
+package joe;
+
 import java.time.format.DateTimeParseException;
+
+import joe.exception.InvalidJoeInputException;
+import joe.parser.Parser;
+import joe.storage.Storage;
+import joe.task.TaskList;
+import joe.ui.Ui;
 
 public class Joe {
     private Ui ui;

@@ -1,6 +1,8 @@
+package joe.task;
+
 import java.util.ArrayList;
 
-class TaskList {
+public class TaskList {
     private ArrayList<Task> todoList;
 
     public TaskList(ArrayList<Task> todoList) {

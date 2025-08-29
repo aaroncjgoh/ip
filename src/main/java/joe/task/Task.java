@@ -1,4 +1,6 @@
-class Task {
+package joe.task;
+
+public class Task {
     private String description;
     private boolean isDone = false;
 
