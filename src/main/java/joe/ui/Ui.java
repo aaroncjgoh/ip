@@ -1,6 +1,10 @@
+package joe.ui;
+
 import java.util.Scanner;
 
-class Ui {
+import joe.task.TaskList;
+
+public class Ui {
     private Scanner scanner = new Scanner(System.in);
 
     public Ui() {

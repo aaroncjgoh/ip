@@ -1,8 +1,9 @@
+package joe.task;
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-class Event extends Task {
+public class Event extends Task {
     private static String formatDates(String from, String to) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
