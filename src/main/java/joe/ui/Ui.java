@@ -11,27 +11,47 @@ public class Ui {
 
     }
 
+    /**
+     * Prints the welcome message onto the terminal.
+     */
     public void welcomeText() {
         this.line();
         System.out.println("Hello I'm Joe\n" + "What can I do for you?");
         this.line();
     }
 
+    /**
+     * Prints a line that acts as a divider between input of user and output of joe.
+     */
     public void line() {
         System.out.println("--------------------------------");
     }
 
+    /**
+     * Prints the exit message onto the terminal.
+     */
     public void byeText() {
         System.out.println("Bye. Hope to see you again soon!");
         line();
     }
 
+    /**
+     * Allows the user to input a string via the terminal. Returns the input as a
+     * string.
+     * 
+     * @return Input as a string.
+     */
     public String takeInput() {
         String input = scanner.nextLine();
         line();
         return input;
     }
 
+    /**
+     * Prints all the tasks in the todo list onto the terminal one after another.
+     * 
+     * @param todoList Current list of tasks.
+     */
     public void print_todoList(TaskList todoList) {
         System.out.println("Your To-Do List:");
         for (int i = 0; i < todoList.getTodoList().size(); i++) {
