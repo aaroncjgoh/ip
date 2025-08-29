@@ -14,10 +14,25 @@ public class Event extends Task {
         return " (from: " + formattedFrom + " to: " + formattedTo + ")";
     }
 
+    /**
+     * Creates an Event task that has not been completed.
+     * 
+     * @param description Description of event.
+     * @param from Start date of the event.
+     * @param to End date of the event.
+     */
     public Event(String description, String from, String to) {
         super(description + formatDates(from, to));
     }
 
+    /**
+     * Creates an Event task whose completion status can be specified.
+     * 
+     * @param description Description of event.
+     * @param from Start date of the event.
+     * @param to End date of the event.
+     * @param isDone Completion status of the event.
+     */
     public Event(String description, String from, String to, boolean isDone) {
         super(description + formatDates(from, to), isDone);
     }

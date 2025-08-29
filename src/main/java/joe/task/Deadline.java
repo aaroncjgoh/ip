@@ -13,10 +13,23 @@ public class Deadline extends Task {
         return " (by: " + formattedFrom + ")";
     }
 
+    /**
+     * Creates a Deadline task that has not been completed.
+     * 
+     * @param description Description of the task.
+     * @param by Due date of the task.
+     */
     public Deadline(String description, String by) {
         super(description + formatDates(by));
     }
 
+    /**
+     * Creates a Deadline task whose completion status can be specified.
+     * 
+     * @param description Description of the task.
+     * @param by Due date of the task.
+     * @param isDone Completion status of the task.
+     */
     public Deadline(String description, String by, boolean isDone) {
         super(description + formatDates(by), isDone);
     }
