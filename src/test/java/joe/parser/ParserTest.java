@@ -39,7 +39,7 @@ class ParserTest {
         // Check task list has one task
         assertEquals(1, taskList.getLength());
         assertTrue(taskList.getTask(0) instanceof ToDo);
-        assertEquals("[0] Buy milk", taskList.getTask(0).toString());
+        assertEquals("[T][0] Buy milk", taskList.getTask(0).toString());
 
         // Verify UI and storage were called
         verify(storage).logTodoList(taskList);
@@ -54,7 +54,7 @@ class ParserTest {
         // Mark the first task
         parser.executeCommand("mark 1");
 
-        assertEquals("[1] Read book", taskList.getTask(0).toString());
+        assertEquals("[T][1] Read book", taskList.getTask(0).toString());
 
         // Verify UI and storage were called
         verify(storage, times(2)).logTodoList(taskList); // once for todo, once for mark
