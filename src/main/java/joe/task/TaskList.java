@@ -57,4 +57,8 @@ public class TaskList {
     public int getLength() {
         return this.todoList.size();
     }
+
+    public Task getTask(int index) {
+        return this.todoList.get(index);
+    }
 }
