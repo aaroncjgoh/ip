@@ -20,10 +20,20 @@ public class Storage {
     private ArrayList<Task> todoList = new ArrayList<>();
     private String filepath;
 
+    /**
+     * Creates a storage object that stores and loads history of tasks.
+     * 
+     * @param filepath Filepath to the txt file storing the history.
+     */
     public Storage(String filepath) {
         this.filepath = filepath;
     }
 
+    /**
+     * Stores the current tasks in the TaskList into a txt file.
+     * 
+     * @param todoList TaskList of tasks.
+     */
     public void logTodoList(TaskList todoList) {
         try {
             File dir = new File("data");
@@ -43,6 +53,11 @@ public class Storage {
         }
     }
 
+    /**
+     * Converts the tasks in the memory txt file into an ArrayList.
+     * 
+     * @return ArrayList of tasks in the memory txt file.
+     */
     public ArrayList<Task> loadTodoList() {
         File f = new File(filepath);
         try {
@@ -93,6 +108,12 @@ public class Storage {
         return this.todoList;
     }
 
+    /**
+     * Formats date string stored in memory to the yyyy-MM-dd format.
+     * 
+     * @param date Date string in MMM dd yyyy format.
+     * @return Date string in yyyy-MM-dd format.
+     */
     public String formatDatesFromMemory(String date) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -13,12 +13,25 @@ public class Parser {
     private Storage storage;
     private Ui ui;
 
+    /**
+     * Creates a parser object that deals with inputs given by the user.
+     * 
+     * @param tasks TaskList object of tasks.
+     * @param storage Storage object tracking memory.
+     * @param ui Ui object handling displays in the terminal.
+     */
     public Parser(TaskList tasks, Storage storage, Ui ui) {
         this.taskList = tasks;
         this.storage = storage;
         this.ui = ui;
     }
 
+    /**
+     * Takes in the command input by the user and performs the respective actions.
+     * 
+     * @param input Input command given by user.
+     * @throws InvalidJoeInputException If command is not recognized.
+     */
     public void executeCommand(String input) throws InvalidJoeInputException {
         String[] parts = input.split(" ");
         String command = parts[0];
