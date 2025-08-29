@@ -6,7 +6,11 @@ import joe.task.Deadline;
 import joe.task.Event;
 import joe.task.TaskList;
 import joe.task.ToDo;
+import joe.task.Task;
 import joe.ui.Ui;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Parser {
     private TaskList taskList;
@@ -41,7 +45,7 @@ public class Parser {
         }
 
         case "list": {
-            this.ui.print_todoList(taskList);
+            this.ui.printTodoList(taskList);
             break;
         }
 
@@ -127,6 +131,21 @@ public class Parser {
             this.taskList.deleteFromList(index);
             this.storage.logTodoList(taskList);
             this.ui.line();
+            break;
+        }
+
+        case "find": {
+            if (parts.length < 2) {
+                throw new InvalidJoeInputException(command);
+            }
+            if (parts.length > 2) {
+                throw new InvalidJoeInputException(command, "Only give one word");
+            }
+            String keyWord = input.split(" ", 2)[1];
+            ArrayList<Task> output = new ArrayList<>(this.taskList.getTodoList());
+            List<Task> matches = output.stream()
+                    .filter(task -> Arrays.asList(task.toString().split(" ")).contains(keyWord)).toList();
+            this.ui.printMatches(matches);
             break;
         }
 
