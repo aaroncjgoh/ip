@@ -1,7 +1,9 @@
 package joe.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
+import joe.task.Task;
 import joe.task.TaskList;
 
 public class Ui {
@@ -52,11 +54,24 @@ public class Ui {
      * 
      * @param todoList Current list of tasks.
      */
-    public void print_todoList(TaskList todoList) {
+    public void printTodoList(TaskList todoList) {
         System.out.println("Your To-Do List:");
         for (int i = 0; i < todoList.getTodoList().size(); i++) {
             System.out.println((i + 1) + ". " + todoList.getTodoList().get(i));
         }
         line();
+    }
+
+    public void printMatches(List<Task> matches) {
+        System.out.println("Here are the matching tasks in your list: ");
+        if (matches.size() == 0) {
+            System.out.println("No matches!");
+        } else {
+            for (int i = 0; i < matches.size(); i++) {
+                System.out.println((i + 1) + ". " + matches.get(i));
+            }
+            line();
+        }
+
     }
 }
