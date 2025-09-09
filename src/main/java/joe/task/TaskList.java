@@ -24,11 +24,10 @@ public class TaskList {
      * 
      * @param task Task object.
      */
-    public void addToList(Task task) {
+    public String addToList(Task task) {
         this.todoList.add(task);
-        System.out.println("Got it. I've added this task: \n");
-        System.out.println(task);
-        System.out.println("\nNow you have " + this.todoList.size() + " tasks in the list.");
+        return "Got it. I've added this task: \n" + task.toString() + "\nNow you have " + this.todoList.size()
+                + " tasks in the list.";
     }
 
     /**
@@ -36,12 +35,11 @@ public class TaskList {
      * 
      * @param index Index of the task to be deleted from the TaskList.
      */
-    public void deleteFromList(int index) {
+    public String deleteFromList(int index) {
         Task task = this.todoList.get(index);
         this.todoList.remove(index);
-        System.out.println("Got it. I'v removed this task from your list: \n");
-        System.out.println(task);
-        System.out.println("\nNow you have " + this.todoList.size() + " tasks in the list.");
+        return "Got it. I'v removed this task from your list: \n" + task.toString() + "\nNow you have "
+                + this.todoList.size() + " tasks in the list.";
     }
 
     /**
@@ -49,14 +47,16 @@ public class TaskList {
      * 
      * @param index Index of the task to be marked as done.
      */
-    public void markTaskAsDone(int index) {
+    public String markTaskAsDone(int index) {
+        String output = "";
         if (index > this.todoList.size()) {
-            System.out.println("Invalid task number. Please try again.");
+            return "Invalid task number. Please try again.";
         } else {
-            System.out.println("Nice I've marked this task as done:");
+            output += "Ok, I've marked the task as done: \n";
             Task task = todoList.get(index - 1);
             task.markAsDone();
-            System.out.println(task);
+            output += task.toString();
+            return output;
         }
     }
 
@@ -65,14 +65,16 @@ public class TaskList {
      * 
      * @param index Index of the task to be marked as not done.
      */
-    public void markTaskAsNotDone(int index) {
+    public String markTaskAsNotDone(int index) {
+        String output = "";
         if (index > this.todoList.size()) {
-            System.out.println("Invalid task number. Please try again.");
+            return "Invalid task number. Please try again.";
         } else {
-            System.out.println("Ok, I've marked the task as not done:");
+            output += "Ok, I've marked the task as not done: \n";
             Task task = todoList.get(index - 1);
             task.markAsNotDone();
-            System.out.println(task);
+            output += task.toString();
+            return output;
         }
     }
 

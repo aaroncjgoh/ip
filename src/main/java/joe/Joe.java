@@ -48,4 +48,15 @@ public class Joe {
         this.parser = new Parser(this.taskList, this.storage, this.ui);
     }
 
+    public String getResponse(String input) {
+        try {
+            String output = parser.executeCommand(input);
+            return output;
+        } catch (InvalidJoeInputException e) {
+            return e.getMessage();
+        } catch (DateTimeParseException e) {
+            return "Date should be in YYYY-MM-DD format";
+        }
+    }
+
 }

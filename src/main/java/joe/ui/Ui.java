@@ -16,10 +16,8 @@ public class Ui {
     /**
      * Prints the welcome message onto the terminal.
      */
-    public void welcomeText() {
-        this.line();
-        System.out.println("Hello I'm Joe\n" + "What can I do for you?");
-        this.line();
+    public static String welcomeText() {
+        return "Hello I'm Joe\n" + "What can I do for you?";
     }
 
     /**
@@ -45,7 +43,6 @@ public class Ui {
      */
     public String takeInput() {
         String input = scanner.nextLine();
-        line();
         return input;
     }
 
@@ -54,24 +51,24 @@ public class Ui {
      * 
      * @param todoList Current list of tasks.
      */
-    public void printTodoList(TaskList todoList) {
-        System.out.println("Your To-Do List:");
+    public String printTodoList(TaskList todoList) {
+        String output = "Your To-Do List: \n";
         for (int i = 0; i < todoList.getTodoList().size(); i++) {
-            System.out.println((i + 1) + ". " + todoList.getTodoList().get(i));
+            output += (i + 1) + ". " + todoList.getTodoList().get(i) + "\n";
         }
-        line();
+        return output;
     }
 
-    public void printMatches(List<Task> matches) {
-        System.out.println("Here are the matching tasks in your list: ");
+    public String printMatches(List<Task> matches) {
+        String output = "Here are the matching tasks in your list: \n";
         if (matches.size() == 0) {
-            System.out.println("No matches!");
+            output += "No matches!";
         } else {
             for (int i = 0; i < matches.size(); i++) {
-                System.out.println((i + 1) + ". " + matches.get(i));
+                output += (i + 1) + ". " + matches.get(i) + "\n";
             }
-            line();
         }
 
+        return output;
     }
 }
