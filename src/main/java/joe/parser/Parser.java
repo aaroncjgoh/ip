@@ -36,17 +36,17 @@ public class Parser {
      * @param input Input command given by user.
      * @throws InvalidJoeInputException If command is not recognized.
      */
-    public void executeCommand(String input) throws InvalidJoeInputException {
+    public String executeCommand(String input) throws InvalidJoeInputException {
+        String output;
         String[] parts = input.split(" ");
         String command = parts[0];
         switch (command) {
         case "bye": {
-            break;
+            return "";
         }
 
         case "list": {
-            this.ui.printTodoList(taskList);
-            break;
+            return this.ui.printTodoList(taskList);
         }
 
         case "mark": {
@@ -58,10 +58,9 @@ public class Parser {
                 throw new InvalidJoeInputException(command, "Invalid index");
             }
 
-            this.taskList.markTaskAsDone(Integer.parseInt(parts[1]));
+            output = this.taskList.markTaskAsDone(Integer.parseInt(parts[1]));
             this.storage.logTodoList(this.taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "unmark": {
@@ -73,10 +72,9 @@ public class Parser {
                 throw new InvalidJoeInputException(command, "Invalid index");
             }
 
-            this.taskList.markTaskAsNotDone(Integer.parseInt(parts[1]));
+            output = this.taskList.markTaskAsNotDone(Integer.parseInt(parts[1]));
             this.storage.logTodoList(taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "todo": {
@@ -85,10 +83,9 @@ public class Parser {
             }
 
             String description = input.split(" ", 2)[1];
-            this.taskList.addToList(new ToDo(description));
+            output = this.taskList.addToList(new ToDo(description));
             this.storage.logTodoList(taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "deadline": {
@@ -98,10 +95,9 @@ public class Parser {
 
             String description = input.split(" ", 2)[1].split(" /by ")[0].trim();
             String by = input.split(" /by ")[1].trim();
-            this.taskList.addToList(new Deadline(description, by));
+            output = this.taskList.addToList(new Deadline(description, by));
             this.storage.logTodoList(taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "event": {
@@ -112,10 +108,9 @@ public class Parser {
             String description = input.split(" /from ")[0].split(" ", 2)[1].trim();
             String from = input.split(" /from ")[1].split(" /to ")[0].trim();
             String to = input.split(" /to ")[1].trim();
-            this.taskList.addToList(new Event(description, from, to));
+            output = this.taskList.addToList(new Event(description, from, to));
             this.storage.logTodoList(taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "delete": {
@@ -128,10 +123,9 @@ public class Parser {
             }
 
             int index = Integer.parseInt(parts[1]) - 1;
-            this.taskList.deleteFromList(index);
+            output = this.taskList.deleteFromList(index);
             this.storage.logTodoList(taskList);
-            this.ui.line();
-            break;
+            return output;
         }
 
         case "find": {
@@ -142,11 +136,11 @@ public class Parser {
                 throw new InvalidJoeInputException(command, "Only give one word");
             }
             String keyWord = input.split(" ", 2)[1];
-            ArrayList<Task> output = new ArrayList<>(this.taskList.getTodoList());
-            List<Task> matches = output.stream()
+            ArrayList<Task> tasks = new ArrayList<>(this.taskList.getTodoList());
+            List<Task> matches = tasks.stream()
                     .filter(task -> Arrays.asList(task.toString().split(" ")).contains(keyWord)).toList();
-            this.ui.printMatches(matches);
-            break;
+            output = this.ui.printMatches(matches);
+            return output;
         }
 
         default: {
