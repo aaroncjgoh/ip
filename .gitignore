@@ -18,5 +18,4 @@ bin/
 text-ui-test/EXPECTED-UNIX.TXT
 
 # Formatting files
-*.xml
 /.vscode
