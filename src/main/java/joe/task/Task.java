@@ -1,5 +1,8 @@
 package joe.task;
 
+/**
+ * Parent class of all tasks, defines main attributes each task must have
+ */
 public class Task {
     private String description;
     private boolean isDone = false;

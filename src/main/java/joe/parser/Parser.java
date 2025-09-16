@@ -12,17 +12,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The Parser class is responsible for interpreting and executing user commands.
+ * It connects user input with actions on the TaskList, handles storage
+ * persistence, and formats output through the Ui.
+ */
 public class Parser {
-    private TaskList taskList;
-    private Storage storage;
-    private Ui ui;
+    private final TaskList taskList;
+    private final Storage storage;
+    private final Ui ui;
 
     /**
-     * Creates a parser object that deals with inputs given by the user.
-     * 
-     * @param tasks TaskList object of tasks.
-     * @param storage Storage object tracking memory.
-     * @param ui Ui object handling displays in the terminal.
+     * Constructs a {@code Parser} object that deals with inputs given by the user.
+     *
+     * @param tasks the {@link TaskList} object of tasks
+     * @param storage the {@link Storage} object handling file persistence
+     * @param ui the {@link Ui} object for displaying messages to the user
      */
     public Parser(TaskList tasks, Storage storage, Ui ui) {
         this.taskList = tasks;
@@ -32,122 +37,199 @@ public class Parser {
 
     /**
      * Takes in the command input by the user and performs the respective actions.
-     * 
-     * @param input Input command given by user.
-     * @throws InvalidJoeInputException If command is not recognized.
+     *
+     * @param input the input command given by the user
+     * @return the response message to be displayed to the user
+     * @throws InvalidJoeInputException if the command is invalid or malformed
      */
     public String executeCommand(String input) throws InvalidJoeInputException {
-        assert !input.isEmpty() : "Input text shouldn't be empty";
-        String output;
-        String[] parts = input.split(" ");
+        String[] parts = input.trim().split(" ");
         String command = parts[0];
+
         switch (command) {
-        case "bye": {
-            return "";
-        }
-
-        case "list": {
-            return this.ui.printTodoList(taskList);
-        }
-
-        case "mark": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            if (Integer.parseInt(parts[1]) > this.taskList.getLength() || Integer.parseInt(parts[1]) < 1) {
-                throw new InvalidJoeInputException(command, "Invalid index");
-            }
-
-            output = this.taskList.markTaskAsDone(Integer.parseInt(parts[1]));
-            this.storage.logTodoList(this.taskList);
-            return output;
-        }
-
-        case "unmark": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            if (Integer.parseInt(parts[1]) > this.taskList.getLength() || Integer.parseInt(parts[1]) < 1) {
-                throw new InvalidJoeInputException(command, "Invalid index");
-            }
-
-            output = this.taskList.markTaskAsNotDone(Integer.parseInt(parts[1]));
-            this.storage.logTodoList(taskList);
-            return output;
-        }
-
-        case "todo": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            String description = input.split(" ", 2)[1];
-            output = this.taskList.addToList(new ToDo(description));
-            this.storage.logTodoList(taskList);
-            return output;
-        }
-
-        case "deadline": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            String description = input.split(" ", 2)[1].split(" /by ")[0].trim();
-            String by = input.split(" /by ")[1].trim();
-            output = this.taskList.addToList(new Deadline(description, by));
-            this.storage.logTodoList(taskList);
-            return output;
-        }
-
-        case "event": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            String description = input.split(" /from ")[0].split(" ", 2)[1].trim();
-            String from = input.split(" /from ")[1].split(" /to ")[0].trim();
-            String to = input.split(" /to ")[1].trim();
-            output = this.taskList.addToList(new Event(description, from, to));
-            this.storage.logTodoList(taskList);
-            return output;
-        }
-
-        case "delete": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-
-            if (Integer.parseInt(parts[1]) > this.taskList.getLength() || Integer.parseInt(parts[1]) < 1) {
-                throw new InvalidJoeInputException(command, "Invalid index");
-            }
-
-            int index = Integer.parseInt(parts[1]) - 1;
-            output = this.taskList.deleteFromList(index);
-            this.storage.logTodoList(taskList);
-            return output;
-        }
-
-        case "find": {
-            if (parts.length < 2) {
-                throw new InvalidJoeInputException(command);
-            }
-            if (parts.length > 2) {
-                throw new InvalidJoeInputException(command, "Only give one word");
-            }
-            String keyWord = input.split(" ", 2)[1];
-            ArrayList<Task> tasks = new ArrayList<>(this.taskList.getTodoList());
-            List<Task> matches = tasks.stream()
-                    .filter(task -> Arrays.asList(task.toString().split(" ")).contains(keyWord)).toList();
-            output = this.ui.printMatches(matches);
-            return output; // Streams used here
-        }
-
-        default: {
+        case "bye":
+            return handleBye();
+        case "list":
+            return handleList();
+        case "mark":
+            return handleMark(parts);
+        case "unmark":
+            return handleUnmark(parts);
+        case "todo":
+            return handleTodo(input, parts);
+        case "deadline":
+            return handleDeadline(input, parts);
+        case "event":
+            return handleEvent(input, parts);
+        case "delete":
+            return handleDelete(parts);
+        case "find":
+            return handleFind(input, parts);
+        default:
             throw new InvalidJoeInputException();
         }
-        }
+    }
 
+    // ---------------- Command Handlers ---------------- //
+
+    /**
+     * Handles the {@code bye} command.
+     *
+     * @return an empty string to indicate termination
+     */
+    private String handleBye() {
+        return "";
+    }
+
+    /**
+     * Handles the {@code list} command.
+     *
+     * @return a string representation of the current to-do list
+     */
+    private String handleList() {
+        return ui.printTodoList(taskList);
+    }
+
+    /**
+     * Handles the {@code mark} command.
+     *
+     * @param parts the split command input
+     * @return the result of marking the task as done
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleMark(String[] parts) throws InvalidJoeInputException {
+        int index = parseIndex(parts, "mark");
+        String output = taskList.markTaskAsDone(index);
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code unmark} command.
+     *
+     * @param parts the split command input
+     * @return the result of marking the task as not done
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleUnmark(String[] parts) throws InvalidJoeInputException {
+        int index = parseIndex(parts, "unmark");
+        String output = taskList.markTaskAsNotDone(index);
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code todo} command.
+     *
+     * @param input the full user input
+     * @param parts the split command input
+     * @return the result of adding a new to-do task
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleTodo(String input, String[] parts) throws InvalidJoeInputException {
+        if (parts.length < 2) {
+            throw new InvalidJoeInputException("todo");
+        }
+        String description = input.split(" ", 2)[1];
+        String output = taskList.addToList(new ToDo(description));
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code deadline} command.
+     *
+     * @param input the full user input
+     * @param parts the split command input
+     * @return the result of adding a new deadline task
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleDeadline(String input, String[] parts) throws InvalidJoeInputException {
+        if (parts.length < 2 || !input.contains(" /by ")) {
+            throw new InvalidJoeInputException("deadline");
+        }
+        String description = input.split(" ", 2)[1].split(" /by ")[0].trim();
+        String by = input.split(" /by ")[1].trim();
+        String output = taskList.addToList(new Deadline(description, by));
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code event} command.
+     *
+     * @param input the full user input
+     * @param parts the split command input
+     * @return the result of adding a new event task
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleEvent(String input, String[] parts) throws InvalidJoeInputException {
+        if (parts.length < 2 || !input.contains(" /from ") || !input.contains(" /to ")) {
+            throw new InvalidJoeInputException("event");
+        }
+        String description = input.split(" /from ")[0].split(" ", 2)[1].trim();
+        String from = input.split(" /from ")[1].split(" /to ")[0].trim();
+        String to = input.split(" /to ")[1].trim();
+        String output = taskList.addToList(new Event(description, from, to));
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code delete} command.
+     *
+     * @param parts the split command input
+     * @return the result of deleting the specified task
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleDelete(String[] parts) throws InvalidJoeInputException {
+        int index = parseIndex(parts, "delete") - 1;
+        String output = taskList.deleteFromList(index);
+        storage.logTodoList(taskList);
+        return output;
+    }
+
+    /**
+     * Handles the {@code find} command.
+     *
+     * @param input the full user input
+     * @param parts the split command input
+     * @return a list of matching tasks
+     * @throws InvalidJoeInputException if the input is invalid
+     */
+    private String handleFind(String input, String[] parts) throws InvalidJoeInputException {
+        if (parts.length != 2) {
+            throw new InvalidJoeInputException("find", "Provide exactly one keyword");
+        }
+        String keyword = input.split(" ", 2)[1];
+        ArrayList<Task> tasks = new ArrayList<>(taskList.getTodoList());
+        List<Task> matches = tasks.stream().filter(task -> Arrays.asList(task.toString().split(" ")).contains(keyword))
+                .toList();
+        return ui.printMatches(matches);
+    }
+
+    /**
+     * Parses the index from a user command and validates it against the task list.
+     *
+     * @param parts the split command input
+     * @param command the command name for error reporting
+     * @return the validated task index
+     * @throws InvalidJoeInputException if the index is missing, not a number, or
+     * out of bounds
+     */
+    private int parseIndex(String[] parts, String command) throws InvalidJoeInputException {
+        if (parts.length < 2) {
+            throw new InvalidJoeInputException(command);
+        }
+        int index;
+        try {
+            index = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            throw new InvalidJoeInputException(command, "Index must be a number");
+        }
+        if (index < 1 || index > taskList.getLength()) {
+            throw new InvalidJoeInputException(command, "Invalid index");
+        }
+        return index;
     }
 }
