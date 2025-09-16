@@ -141,7 +141,7 @@ public class Parser {
             List<Task> matches = tasks.stream()
                     .filter(task -> Arrays.asList(task.toString().split(" ")).contains(keyWord)).toList();
             output = this.ui.printMatches(matches);
-            return output;
+            return output; // Streams used here
         }
 
         default: {
