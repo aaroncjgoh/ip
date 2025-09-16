@@ -1,5 +1,8 @@
 package joe.task;
 
+/**
+ * Type of task that just contains a description
+ */
 public class ToDo extends Task {
     /**
      * Creates a ToDo task that has not been completed.

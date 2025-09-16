@@ -3,6 +3,9 @@ package joe.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Type of task that just contains a description, start date and end date
+ */
 public class Event extends Task {
     private static String formatDates(String from, String to) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
