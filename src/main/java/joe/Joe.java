@@ -59,4 +59,7 @@ public class Joe {
         }
     }
 
+    public TaskList getTaskList() {
+        return this.taskList;
+    }
 }

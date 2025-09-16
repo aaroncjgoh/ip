@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
  * Type of task that just contains a description, start date and end date
  */
 public class Event extends Task {
+    private String startDate;
+
     private static String formatDates(String from, String to) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -26,6 +28,7 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) {
         super(description + formatDates(from, to));
+        startDate = from;
     }
 
     /**
@@ -38,6 +41,10 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to, boolean isDone) {
         super(description + formatDates(from, to), isDone);
+    }
+
+    public String getNextDate() {
+        return this.startDate;
     }
 
     @Override

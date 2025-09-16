@@ -1,6 +1,7 @@
 package joe.task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * List specifically for handling Task objects
@@ -93,5 +94,29 @@ public class TaskList {
 
     public Task getTask(int index) {
         return this.todoList.get(index);
+    }
+
+    public Task getSoonestTask() {
+        Task soonestTask = null;
+
+        for (Task task : todoList) {
+            if (task instanceof Deadline) {
+                Deadline deadline = (Deadline) task;
+                if (deadline.getNextDate() == null)
+                    continue;
+                if (soonestTask == null || deadline.getNextDate().compareTo(soonestTask.getNextDate()) < 0) {
+                    soonestTask = deadline;
+                }
+            } else if (task instanceof Event) {
+                Event event = (Event) task;
+                if (event.getNextDate() == null)
+                    continue;
+                if (soonestTask == null || event.getNextDate().compareTo(soonestTask.getNextDate()) < 0) {
+                    soonestTask = event;
+                }
+            }
+        }
+
+        return soonestTask;
     }
 }

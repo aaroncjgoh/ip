@@ -43,6 +43,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public String getNextDate() {
+        return null;
+    }
+
     @Override
     public String toString() {
         if (isDone) {

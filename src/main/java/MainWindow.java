@@ -1,11 +1,13 @@
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import joe.Joe;
+import joe.task.Task;
 
 /**
  * Controller for the main GUI.
@@ -19,6 +21,8 @@ public class MainWindow extends AnchorPane {
     private TextField userInput;
     @FXML
     private Button sendButton;
+    @FXML
+    private Label reminderLabel;
 
     private Joe joe;
 
@@ -33,6 +37,7 @@ public class MainWindow extends AnchorPane {
     /** Injects the Joe instance */
     public void setJoe(Joe j) {
         joe = j;
+        updateReminder();
     }
 
     /**
@@ -50,9 +55,19 @@ public class MainWindow extends AnchorPane {
         dialogContainer.getChildren().addAll(DialogBox.getUserDialog(input, userImage),
                 DialogBox.getJoeDialog(response, joeImage));
         userInput.clear();
+        updateReminder();
     }
 
     public VBox getDialogContainer() {
         return dialogContainer;
+    }
+
+    private void updateReminder() {
+        Task nextTask = joe.getTaskList().getSoonestTask(); // implement this in TaskList
+        if (nextTask == null) {
+            reminderLabel.setText("No upcoming tasks 🎉");
+        } else {
+            reminderLabel.setText("Next task: " + nextTask.toString());
+        }
     }
 }

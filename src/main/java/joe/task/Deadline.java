@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
  * Type of task that contains a description and due date
  */
 public class Deadline extends Task {
+    private String deadline;
+
     private static String formatDates(String by) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -24,6 +26,7 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by) {
         super(description + formatDates(by));
+        this.deadline = by;
     }
 
     /**
@@ -35,6 +38,11 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String by, boolean isDone) {
         super(description + formatDates(by), isDone);
+        this.deadline = by;
+    }
+
+    public String getNextDate() {
+        return this.deadline;
     }
 
     @Override
