@@ -10,6 +10,7 @@ public class Task {
      * @param description Description of task.
      */
     public Task(String description) {
+        assert !description.isEmpty() : "Description of a task cannot be empty";
         this.description = description;
     }
 
@@ -20,6 +21,7 @@ public class Task {
      * @param isDone Completion status.
      */
     public Task(String description, boolean isDone) {
+        assert !description.isEmpty() : "Description of a task cannot be empty";
         this.description = description;
         this.isDone = isDone;
     }

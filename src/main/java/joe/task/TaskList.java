@@ -48,6 +48,7 @@ public class TaskList {
      * @param index Index of the task to be marked as done.
      */
     public String markTaskAsDone(int index) {
+        assert index >= 0 : "Index of task cannot be negative";
         String output = "";
         if (index > this.todoList.size()) {
             return "Invalid task number. Please try again.";
@@ -66,6 +67,7 @@ public class TaskList {
      * @param index Index of the task to be marked as not done.
      */
     public String markTaskAsNotDone(int index) {
+        assert index >= 0 : "Index of task cannot be negative";
         String output = "";
         if (index > this.todoList.size()) {
             return "Invalid task number. Please try again.";
