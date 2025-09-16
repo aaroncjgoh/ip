@@ -2,6 +2,9 @@ package joe.task;
 
 import java.util.ArrayList;
 
+/**
+ * List specifically for handling Task objects
+ */
 public class TaskList {
     private ArrayList<Task> todoList;
 

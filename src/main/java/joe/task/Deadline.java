@@ -3,6 +3,9 @@ package joe.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Type of task that contains a description and due date
+ */
 public class Deadline extends Task {
     private static String formatDates(String by) {
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
