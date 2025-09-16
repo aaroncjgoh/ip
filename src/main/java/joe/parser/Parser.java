@@ -37,6 +37,7 @@ public class Parser {
      * @throws InvalidJoeInputException If command is not recognized.
      */
     public String executeCommand(String input) throws InvalidJoeInputException {
+        assert !input.isEmpty() : "Input text shouldn't be empty";
         String output;
         String[] parts = input.split(" ");
         String command = parts[0];
