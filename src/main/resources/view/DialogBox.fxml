@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-
+<!-- Assisted by ChatGPT to obtain the desired layout -->
 <fx:root alignment="TOP_LEFT"
          spacing="10"
          type="javafx.scene.layout.HBox"
