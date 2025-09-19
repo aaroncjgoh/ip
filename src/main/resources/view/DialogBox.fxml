@@ -4,19 +4,37 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
-<fx:root alignment="TOP_RIGHT"
-         maxHeight="1.7976931348623157E308"
-         maxWidth="1.7976931348623157E308"
-         prefWidth="400.0"
+<fx:root alignment="TOP_LEFT"
+         spacing="10"
          type="javafx.scene.layout.HBox"
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
+
   <children>
-    <Label fx:id="dialog" text="Label" wrapText="true" minHeight="-Infinity"/>
-    <ImageView fx:id="displayPicture" fitHeight="99.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true" />
+    <!-- Avatar -->
+    <ImageView fx:id="displayPicture"
+               fitHeight="40.0"
+               fitWidth="40.0"
+               preserveRatio="true"
+               smooth="true"
+               style="-fx-clip-shape: circle;" />
+
+    <!-- Message bubble -->
+    <Label fx:id="dialog"
+       wrapText="true"
+       maxWidth="280"
+       minHeight="Region.USE_PREF_SIZE"
+       prefWidth="Region.USE_COMPUTED_SIZE"
+       prefHeight="Region.USE_COMPUTED_SIZE"
+       HBox.hgrow="ALWAYS"
+       style="-fx-background-color: #e5e5ea; -fx-padding: 10; -fx-background-radius: 15; -fx-font-size: 14;" />
+
+
   </children>
+
   <padding>
-    <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
+    <Insets top="5" right="10" bottom="5" left="10"/>
   </padding>
 </fx:root>

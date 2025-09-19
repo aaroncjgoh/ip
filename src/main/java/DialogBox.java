@@ -1,20 +1,18 @@
 import java.io.IOException;
-import java.util.Collections;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.shape.Circle;
 
 /**
- * Represents a dialog box consisting of an ImageView to represent the speaker's
- * face and a label containing text from the speaker.
+ * DialogBox control for chat bubbles.
  */
 public class DialogBox extends HBox {
     @FXML
@@ -24,7 +22,7 @@ public class DialogBox extends HBox {
 
     private DialogBox(String text, Image img) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainWindow.class.getResource("/view/DialogBox.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/DialogBox.fxml"));
             fxmlLoader.setController(this);
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
@@ -34,26 +32,46 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         displayPicture.setImage(img);
+
+        // Clip avatar into a circle
+        double radius = 20; // avatar assumed 40x40 in FXML
+        Circle clip = new Circle(radius, radius, radius);
+        displayPicture.setClip(clip);
+
+        // ✅ Bubble auto-sizes like Telegram
+        dialog.setWrapText(true);
+        dialog.setMaxWidth(280); // max width before wrapping
+        dialog.setMinHeight(Region.USE_PREF_SIZE);
+
+        // spacing between avatar and bubble
+        this.setSpacing(10);
     }
 
-    /**
-     * Flips the dialog box such that the ImageView is on the left and text on the
-     * right.
-     */
-    private void flip() {
-        ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
-        Collections.reverse(tmp);
-        getChildren().setAll(tmp);
-        setAlignment(Pos.TOP_LEFT);
-    }
-
+    /** Creates a dialog box for user messages (right aligned, blue bubble). */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        DialogBox db = new DialogBox(text, img);
+        db.setAlignment(Pos.TOP_RIGHT);
+
+        // Bubble first, then avatar
+        db.getChildren().setAll(db.dialog, db.displayPicture);
+
+        db.dialog.setStyle("-fx-background-color: #0084ff; -fx-text-fill: white; "
+                + "-fx-padding: 10; -fx-background-radius: 15; -fx-font-size: 14;");
+        HBox.setMargin(db.dialog, new Insets(0, 5, 0, 0));
+        return db;
     }
 
+    /** Creates a dialog box for Joe messages (left aligned, gray bubble). */
     public static DialogBox getJoeDialog(String text, Image img) {
-        var db = new DialogBox(text, img);
-        db.flip();
+        DialogBox db = new DialogBox(text, img);
+        db.setAlignment(Pos.TOP_LEFT);
+
+        // Avatar first, then bubble
+        db.getChildren().setAll(db.displayPicture, db.dialog);
+
+        db.dialog.setStyle("-fx-background-color: #e5e5ea; -fx-text-fill: black; "
+                + "-fx-padding: 10; -fx-background-radius: 15; -fx-font-size: 14;");
+        HBox.setMargin(db.dialog, new Insets(0, 0, 0, 5));
         return db;
     }
 }

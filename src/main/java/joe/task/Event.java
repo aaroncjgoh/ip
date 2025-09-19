@@ -41,6 +41,7 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to, boolean isDone) {
         super(description + formatDates(from, to), isDone);
+        startDate = from;
     }
 
     public String getNextDate() {
