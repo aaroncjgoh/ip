@@ -78,7 +78,7 @@ public class Parser {
      * @return an empty string to indicate termination
      */
     private String handleBye() {
-        return "";
+        return "Goodbye!";
     }
 
     /**

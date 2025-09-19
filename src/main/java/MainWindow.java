@@ -8,6 +8,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import joe.Joe;
 import joe.task.Task;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.util.Duration;
 
 /**
  * Controller for the main GUI.
@@ -49,8 +54,9 @@ public class MainWindow extends AnchorPane {
     private void handleUserInput() {
         String input = userInput.getText();
         String response = joe.getResponse(input);
-        if (response.isEmpty()) {
-            javafx.application.Platform.exit();
+        if (response.equals("Goodbye!")) {
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> Platform.exit()));
+            timeline.play();
         }
         dialogContainer.getChildren().addAll(DialogBox.getUserDialog(input, userImage),
                 DialogBox.getJoeDialog(response, joeImage));

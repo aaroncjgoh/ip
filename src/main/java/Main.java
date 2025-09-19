@@ -23,6 +23,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Joe Chat Bot");
             fxmlLoader.<MainWindow>getController().setJoe(joe); // inject the Duke instance
 
             fxmlLoader.<MainWindow>getController().getDialogContainer().getChildren()
