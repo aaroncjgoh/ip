@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -117,13 +118,21 @@ public class Storage {
      * @return a Deadline object reconstructed from the line
      */
     private Deadline parseDeadline(String taskLine, boolean isDone) {
+        // Extract description (everything before "(by:")
         String descriptionPart = taskLine.split(" ", 2)[1];
         String description = descriptionPart.split("\\(")[0].strip();
 
-        String deadlineRaw = taskLine.split("by:")[1].strip();
-        String deadline = deadlineRaw.substring(0, deadlineRaw.length() - 1);
+        // Extract raw deadline inside "(by: ...)"
+        String deadlineRawPart = taskLine.split("by:")[1];
+        String deadlineRaw = deadlineRawPart.substring(0, deadlineRawPart.length() - 1).strip();
 
-        return new Deadline(description, formatDatesFromMemory(deadline), isDone);
+        // Convert formatted string back to machine-readable "yyyy-MM-dd HHmm"
+        // If you saved it like "Dec 02 2019, 6:00 PM", parse it to LocalDateTime
+        DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        DateTimeFormatter storageFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+        String deadline = LocalDateTime.parse(deadlineRaw, displayFormat).format(storageFormat);
+
+        return new Deadline(description, deadline, isDone);
     }
 
     /**

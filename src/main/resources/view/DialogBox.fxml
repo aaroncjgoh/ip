@@ -4,8 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<!-- Assisted by ChatGPT to obtain the desired layout -->
+
 <fx:root alignment="TOP_LEFT"
          spacing="10"
          type="javafx.scene.layout.HBox"
@@ -23,15 +22,11 @@
 
     <!-- Message bubble -->
     <Label fx:id="dialog"
-       wrapText="true"
-       maxWidth="280"
-       minHeight="Region.USE_PREF_SIZE"
-       prefWidth="Region.USE_COMPUTED_SIZE"
-       prefHeight="Region.USE_COMPUTED_SIZE"
-       HBox.hgrow="ALWAYS"
-       style="-fx-background-color: #e5e5ea; -fx-padding: 10; -fx-background-radius: 15; -fx-font-size: 14;" />
-
-
+           wrapText="true"
+           maxWidth="280"       
+           minWidth="50"       
+           HBox.hgrow="NEVER"   
+           style="-fx-background-color: #e5e5ea; -fx-padding: 10; -fx-background-radius: 15; -fx-font-size: 14;" />
   </children>
 
   <padding>
