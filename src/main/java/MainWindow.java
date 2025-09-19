@@ -63,7 +63,7 @@ public class MainWindow extends AnchorPane {
     }
 
     private void updateReminder() {
-        Task nextTask = joe.getTaskList().getSoonestTask(); // implement this in TaskList
+        Task nextTask = joe.getTaskList().getSoonestTask();
         if (nextTask == null) {
             reminderLabel.setText("No upcoming tasks 🎉");
         } else {
