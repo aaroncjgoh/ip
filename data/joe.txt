@@ -1,3 +1,4 @@
 [D][1] Finish Homework (by: Aug 28 2025)
 [E][1] Play Basketball (from: Aug 29 2025 to: Aug 29 2025)
 [T][1] CS2100 notes
+[T][0] Make notes
