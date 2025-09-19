@@ -32,10 +32,6 @@ public class Joe {
             System.out.println(e.getMessage());
             joe.ui.line();
             joe.ui.takeInput();
-        } catch (DateTimeParseException e) {
-            System.out.println("Date should be in YYYY-MM-DD format");
-            joe.ui.line();
-            joe.ui.takeInput();
         }
 
     }
@@ -54,8 +50,6 @@ public class Joe {
             return output;
         } catch (InvalidJoeInputException e) {
             return e.getMessage();
-        } catch (DateTimeParseException e) {
-            return "Date should be in YYYY-MM-DD format";
         }
     }
 

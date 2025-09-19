@@ -41,7 +41,7 @@ public class TaskList {
     public String deleteFromList(int index) {
         Task task = this.todoList.get(index);
         this.todoList.remove(index);
-        return "Got it. I'v removed this task from your list: \n" + task.toString() + "\nNow you have "
+        return "Got it. I've removed this task from your list: \n" + task.toString() + "\nNow you have "
                 + this.todoList.size() + " tasks in the list.";
     }
 

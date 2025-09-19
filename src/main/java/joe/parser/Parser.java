@@ -8,6 +8,8 @@ import joe.task.TaskList;
 import joe.task.ToDo;
 import joe.task.Task;
 import joe.ui.Ui;
+
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -128,7 +130,7 @@ public class Parser {
      */
     private String handleTodo(String input, String[] parts) throws InvalidJoeInputException {
         if (parts.length < 2) {
-            throw new InvalidJoeInputException("todo");
+            throw new InvalidJoeInputException("todo", "Format to follow: todo <desc>,");
         }
         String description = input.split(" ", 2)[1];
         String output = taskList.addToList(new ToDo(description));
@@ -146,13 +148,19 @@ public class Parser {
      */
     private String handleDeadline(String input, String[] parts) throws InvalidJoeInputException {
         if (parts.length < 2 || !input.contains(" /by ")) {
-            throw new InvalidJoeInputException("deadline");
+            throw new InvalidJoeInputException("deadline", "Format to follow: deadline <desc> /by YYYY-MM-DD HHmm,");
         }
         String description = input.split(" ", 2)[1].split(" /by ")[0].trim();
         String by = input.split(" /by ")[1].trim();
-        String output = taskList.addToList(new Deadline(description, by));
-        storage.logTodoList(taskList);
-        return output;
+
+        try {
+            String output = taskList.addToList(new Deadline(description, by));
+            storage.logTodoList(taskList);
+            return output;
+        } catch (DateTimeParseException e) {
+            throw new InvalidJoeInputException("deadline",
+                    "Date must be in format YYYY-MM-DD HHmm (e.g. 2025-09-19 2359)");
+        }
     }
 
     /**
@@ -165,14 +173,20 @@ public class Parser {
      */
     private String handleEvent(String input, String[] parts) throws InvalidJoeInputException {
         if (parts.length < 2 || !input.contains(" /from ") || !input.contains(" /to ")) {
-            throw new InvalidJoeInputException("event");
+            throw new InvalidJoeInputException("event",
+                    "Format to follow: event <desc> /from YYYY-MM-DD /to YYYY-MM-DD,");
         }
         String description = input.split(" /from ")[0].split(" ", 2)[1].trim();
         String from = input.split(" /from ")[1].split(" /to ")[0].trim();
         String to = input.split(" /to ")[1].trim();
-        String output = taskList.addToList(new Event(description, from, to));
-        storage.logTodoList(taskList);
-        return output;
+
+        try {
+            String output = taskList.addToList(new Event(description, from, to));
+            storage.logTodoList(taskList);
+            return output;
+        } catch (DateTimeParseException e) {
+            throw new InvalidJoeInputException("event", "Dates must be in format YYYY-MM-DD (e.g. 2025-09-19)");
+        }
     }
 
     /**
