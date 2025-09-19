@@ -16,8 +16,10 @@ Adds a basic task without any date or time attached.
 
 **Output:**  
 
-Got it. I've added this task:
+Got it. I've added this task: 
+
 [T][0] Make notes
+
 Now you have 4 tasks in the list.
 
 ## Adding deadlines
@@ -31,7 +33,9 @@ Adds a task that has a dealine attached to it.
 **Output:**  
 
 Got it. I've added this task:
+
 [D][0] Finish homework (by: 10pm)
+
 Now you have 4 tasks in the list.
 
 ## Adding events
@@ -45,7 +49,9 @@ Adds a task that has a start and end date. The start and end date is expected to
 **Output:**  
 
 Got it. I've added this task:
+
 [E][0] Japan trip (from: Jun 01 2025 to: Jun 14 2025)
+
 Now you have 1 tasks in the list.
 
 
@@ -61,11 +67,13 @@ Marks task as done and undone depending on its completion status. This completio
 **Output:**
 
 Ok, I've marked the task as done:
+
 [E][1] Japan trip (from: Jun 01 2025 to: Jun 14 2025)
 
 and
 
 Ok, I've marked the task as not done:
+
 [E][0] Japan trip (from: Jun 01 2025 to: Jun 14 2025)
 
 ## Listing tasks
@@ -92,7 +100,9 @@ Deletes the selected task from the list.
 **Output:**
 
 Got it. I've removed this task from your list:
+
 [E][0] Japan trip (from: Jun 01 2025 to: Jun 14 2025)
+
 Now you have 0 tasks in the list.
 
 ## Finding tasks
