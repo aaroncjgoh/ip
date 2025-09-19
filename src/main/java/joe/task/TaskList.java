@@ -1,7 +1,6 @@
 package joe.task;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * List specifically for handling Task objects
